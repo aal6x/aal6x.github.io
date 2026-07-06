@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alex — Graphic Design Portfolio</title>
-<meta name="description" content="Graphic design portfolio of YOUR NAME — sketches that become renders.">
+<title>Alex (@aal6x) — Cool Website :D</title>
+<meta name="description" content="Graphic design portfolio of Alexander — sketches that become renders.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,7 @@
     --ff-display:'Archivo Black', sans-serif;
     --ff-body:'Space Grotesk', sans-serif;
     --ff-mono:'Space Mono', monospace;
+    --header-h:64px;
   }
 
   *,*::before,*::after{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -45,6 +46,7 @@
   :focus-visible{ outline:3px solid var(--cyan); outline-offset:3px; }
 
   .wrap{ max-width:1280px; margin:0 auto; padding:0 clamp(1.25rem,4vw,3rem); }
+  main#top, #work, #about, #contact{ scroll-margin-top:var(--header-h); }
   .eyebrow{ font-family:var(--ff-mono); text-transform:uppercase; letter-spacing:.25em; font-size:.72rem; font-weight:700; color:var(--pencil); }
 
   /* ================= GRAIN ================= */
@@ -97,10 +99,14 @@
     position:fixed; top:0; left:0; right:0; z-index:500;
     display:flex; align-items:center; justify-content:space-between; gap:.6rem;
     padding:.85rem clamp(1rem,4vw,3rem) .85rem calc(clamp(1rem,4vw,3rem) + 34px);
-    background:rgba(245,239,224,.85); backdrop-filter:blur(6px);
     border-bottom:2px solid var(--graphite);
   }
+  header::before{
+    content:''; position:absolute; inset:0; z-index:-1;
+    background:rgba(245,239,224,.85); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  }
   @media (max-width:900px){ header{ padding-left:clamp(1rem,4vw,3rem); } }
+  @media (max-width:480px){ header{ padding-top:.65rem; padding-bottom:.65rem; } }
   .logo{ font-family:var(--ff-hand); font-size:1.9rem; font-weight:700; display:flex; align-items:center; gap:.3rem; flex-shrink:0; }
   @media (max-width:400px){ .logo{ font-size:1.5rem; } }
 
@@ -118,19 +124,36 @@
   .nav-right{ display:flex; align-items:center; gap:.8rem; flex-shrink:0; }
   #navToggle{
     display:none; background:var(--paper); border:2px solid var(--graphite); border-radius:0;
-    width:42px; height:42px; cursor:pointer; padding:0;
+    width:44px; height:44px; cursor:pointer; padding:0; position:relative; z-index:501;
     flex-direction:column; align-items:center; justify-content:center; gap:5px;
+    box-shadow:3px 3px 0 var(--graphite); transition:box-shadow .2s ease, transform .2s ease;
   }
-  #navToggle span{ width:20px; height:3px; background:var(--graphite); display:block; }
+  #navToggle span{
+    width:20px; height:3px; background:var(--graphite); display:block;
+    transition:transform .25s ease, opacity .2s ease;
+  }
+  body.nav-open #navToggle{ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--graphite); }
+  body.nav-open #navToggle span:nth-child(1){ transform:translateY(8px) rotate(45deg); }
+  body.nav-open #navToggle span:nth-child(2){ opacity:0; }
+  body.nav-open #navToggle span:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
 
   @media (max-width:760px){
     nav.links{
-      position:fixed; inset:0; top:64px; flex-direction:column; align-items:flex-start; gap:1rem;
-      background:var(--paper); padding:2rem clamp(1.25rem,4vw,3rem);
-      transform:translateY(-110%); transition:transform .35s ease; border-bottom:2px solid var(--graphite);
+      position:fixed; inset:auto; top:calc(var(--header-h) + .6rem); right:clamp(1rem,4vw,3rem);
+      flex-direction:column; align-items:stretch; gap:.4rem;
+      background:var(--paper); border:2px solid var(--graphite); box-shadow:5px 5px 0 var(--graphite);
+      padding:.6rem; min-width:180px; max-width:min(60vw,260px);
+      transform-origin:top right;
+      transform:scale(.9) translateY(-6px); opacity:0; pointer-events:none;
+      transition:transform .22s ease, opacity .18s ease;
     }
-    body.nav-open nav.links{ transform:translateY(0); }
-    nav.links a{ font-size:1.2rem; width:100%; text-align:center; }
+    body.nav-open nav.links{ transform:scale(1) translateY(0); opacity:1; pointer-events:auto; }
+    nav.links a{
+      font-size:.95rem; width:100%; text-align:center; padding:.7rem .8rem;
+      transform:none !important; box-shadow:none !important;
+    }
+    nav.links a:active{ background:var(--graphite); color:var(--paper); }
+    nav.links a:not(:last-child){ border-bottom:2px solid var(--paper-shadow); }
     #navToggle{ display:flex; }
   }
 
@@ -138,6 +161,7 @@
   .hero{ position:relative; padding:9rem 0 4rem calc(0px); }
   .hero .wrap{ position:relative; padding-left:34px; }
   @media (max-width:900px){ .hero .wrap{ padding-left:0; } }
+  @media (max-width:600px){ .hero{ padding:calc(var(--header-h) + 2rem) 0 2.5rem; } }
 
   .hero-grid{
     display:grid; grid-template-columns:1.3fr 1fr; gap:2rem; align-items:center; position:relative;
@@ -160,6 +184,7 @@
 
   /* ---- 3D cube ---- */
   .cube-scene{ perspective:900px; display:flex; justify-content:center; padding:2rem 0; }
+  @media (max-width:420px){ .cube-scene{ padding:1rem 0; transform:scale(.82); } }
   .cube{
     position:relative; width:150px; height:150px; transform-style:preserve-3d;
     filter:drop-shadow(0 26px 22px rgba(20,15,10,.35)); transition:filter .6s ease;
@@ -199,7 +224,9 @@
   .section{ padding:6rem 0; position:relative; }
   .section .wrap{ padding-left:calc(34px + clamp(1.25rem,4vw,3rem)); }
   @media (max-width:900px){ .section .wrap{ padding-left:clamp(1.25rem,4vw,3rem); } }
+  @media (max-width:600px){ .section{ padding:3.2rem 0; } }
   .section-head{ display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:3rem; }
+  @media (max-width:600px){ .section-head{ margin-bottom:2rem; } }
   .section-title{ font-size:clamp(2.2rem,5.5vw,3.6rem); line-height:.95; }
 
   .torn{ height:26px; background:var(--paper-shadow); clip-path:polygon(0 40%,4% 10%,8% 45%,12% 5%,16% 42%,20% 12%,24% 46%,28% 8%,32% 44%,36% 14%,40% 47%,44% 6%,48% 43%,52% 15%,56% 45%,60% 9%,64% 44%,68% 13%,72% 46%,76% 7%,80% 43%,84% 16%,88% 45%,92% 10%,96% 44%,100% 40%,100% 100%,0 100%); }
@@ -207,6 +234,7 @@
   /* ================= WORK GRID ================= */
   .work-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:2.4rem; }
   @media (max-width:360px){ .work-grid{ grid-template-columns:1fr; } }
+  @media (max-width:600px){ .work-grid{ gap:1.6rem; } }
   .work-card{
     position:relative; border:2px solid var(--graphite); background:var(--paper);
     padding:1rem 1rem 1.4rem; transition:transform .35s ease, box-shadow .35s ease;
@@ -225,6 +253,14 @@
   .cm-4{ background:linear-gradient(135deg,#ffcf3d,#ffdf6b); }
   .cm-5{ background:linear-gradient(135deg,var(--coral),var(--violet)); }
   .cm-6{ background:linear-gradient(135deg,var(--cyan),var(--violet)); }
+  .card-media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+  
 
   .card-num{
     position:absolute; top:.5rem; left:.5rem; width:34px; height:34px;
@@ -339,7 +375,7 @@
         <svg class="arrow-doodle doodle" viewBox="0 0 110 70"><path d="M5,10 C40,0 70,20 60,45" /><path d="M60,45 L48,38 M60,45 L52,55"/></svg>
         <p class="margin-note">hi, i'm</p>
         <h1 class="hero-title extrude" data-text="Alex ">Alex<br></h1>
-        <p class="hero-sub">Capturing Moments with bare Hands. Graphic designer turning rough ideas into finished renders.</p>
+        <p class="hero-sub">Capturing Moments with bare Hands. Photograph and designer turning rough ideas into finished Renders.</p>
         <svg class="underline-doodle doodle" viewBox="0 0 260 20"><path d="M5,12 Q40,2 80,12 T160,10 T255,8"/></svg>
       </div>
 
@@ -375,57 +411,61 @@
       <div class="work-grid">
 
         <article class="work-card">
-          <div class="card-media cm-1 render-toggle">
+          <div class="card-media  render-toggle">
+            <img src="https://i.imgur.com/8ExYnVf.jpeg" alt="volleybll C-Cup 2025">
             <span class="card-num">01<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
-            <span class="card-tag">Branding</span>
+            <span class="card-tag">Photography</span>
           </div>
-          <h3 class="card-title">Place Holder</h3>
+          <h3 class="card-title">Volleyball C-Cup 2025</h3>
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
         <article class="work-card">
-          <div class="card-media cm-2 render-toggle">
+          <div class="card-media render-toggle">
+            <img src="https://i.imgur.com/IxIhyIR.jpeg" alt="volleyball C-Cup 2026">
             <span class="card-num">02<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
-            <span class="card-tag">Type</span>
+            <span class="card-tag">Photography</span>
           </div>
-          <h3 class="card-title">Place Holder</h3>
+          <h3 class="card-title">Volleyball C-Cup 2026</h3>
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
         <article class="work-card">
-          <div class="card-media cm-3 render-toggle">
+          <div class="card-media  render-toggle">
+            <img src="https://i.imgur.com/EGpAKmO.png" alt="BeachVolleyball">
             <span class="card-num">03<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
-            <span class="card-tag">Packaging</span>
+            <span class="card-tag">Design</span>
           </div>
-          <h3 class="card-title">Place Holder</h3>
+          <h3 class="card-title">Poster</h3>
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
         <article class="work-card">
-          <div class="card-media cm-4 render-toggle">
+          <div class="card-media  render-toggle">
+            <img src="https://i.imgur.com/0la3Xvu.png" alt="Info Poster">
             <span class="card-num">04<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
-            <span class="card-tag">Motion</span>
+            <span class="card-tag">Design</span>
           </div>
-          <h3 class="card-title">Place Holder</h3>
+          <h3 class="card-title">Info Poster</h3>
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
         <article class="work-card">
           <div class="card-media cm-5 render-toggle">
             <span class="card-num">05<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
-            <span class="card-tag">Editorial</span>
+            <span class="card-tag">Photography</span>
           </div>
-          <h3 class="card-title">Place Holder</h3>
+          <h3 class="card-title"></h3>
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
         <article class="work-card">
           <div class="card-media cm-6 render-toggle">
             <span class="card-num">06<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
-            <span class="card-tag">Poster</span>
+          
           </div>
-          <h3 class="card-title">Place Holder</h3>
-          <span class="card-view">View project <span class="go">→</span></span>
+          <h3 class="card-title">Loading....</h3>
+          <span class="card-view"> <span class="go"></span></span>
         </article>
 
       </div>
@@ -439,16 +479,16 @@
     <div class="wrap about-grid">
       <div class="photo-frame render-toggle">
         <div class="tape t1"></div>
-        <span>Place Holder</span>
+        <span>Your Photo</span>
         <div class="tape t2"></div>
       </div>
       <div class="about-copy">
         <p class="eyebrow">About</p>
-        <p class="pull">I sketch <mark>ideas</mark> on paper, then push them into full 3D render.</p>
+        <p class="pull">I sketch <mark>ideas</mark> on paper, then push them into fun projects.</p>
         <p>Austrian based Photograph and Graphic Designer, development and it infrastructure are cool too. I love to meet new people and help them create projects and art.</p>
         <div class="tag-cloud">
-          <span>Branding</span><span>Typography</span><span>Art Direction</span>
-          <span>Packaging</span><span>Motion</span><span>3D</span>
+          <span>Typography</span><span>3D Design</span><span>Photography</span>
+          <span>VFX</span><span>Videography</span><span>Graphic Design</span>
         </div>
       </div>
     </div>
@@ -458,10 +498,11 @@
   <section class="section contact" id="contact">
     <div class="wrap">
       <h2 class="section-title extrude" data-text="Let's make something.">Let's make<br>something.</h2>
-      <p>Got a project, a brand, a wild idea? write me an email or contact me via Instagram</p>
+      <p>Got a project, a brand, a wild idea? </p>
       <a class="btn-hello" href="mailto:spechtl.alex33@email.com">Say hello ↗</a>
       <div class="social-row">
         <a href="https://www.instagram.com/aal6x/">Instagram</a><a href="https://github.com/aalinchen">Github</a><a href="https://github.com/aal6x">GitHub</a>
+      </div>
       </div>
     </div>
   </section>
@@ -475,7 +516,7 @@
       <span>MADE ON PAPER, FINISHED IN 3D</span><span>OPEN FOR PROJECTS</span><span>BASED ANYWHERE</span>
     </div>
   </div>
-  <div class="foot-bottom">© <span id="year"></span> Alex — All rights reserved</div>
+   <div class="foot-bottom">© <span id="year"></span> Alex — All rights reserved</div>
 </footer>
 
 <script>
@@ -485,14 +526,35 @@
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  /* echte Header-Höhe als CSS-Variable, damit Dropdown & Scroll-Offset immer passen */
+  var headerEl = document.querySelector('header');
+  function syncHeaderHeight(){
+    document.documentElement.style.setProperty('--header-h', headerEl.offsetHeight + 'px');
+  }
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+  window.addEventListener('orientationchange', syncHeaderHeight);
+
   /* mobile nav */
   var toggle = document.getElementById('navToggle');
+  function closeNav(){
+    document.body.classList.remove('nav-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
   toggle.addEventListener('click', function(){
     var open = document.body.classList.toggle('nav-open');
     toggle.setAttribute('aria-expanded', open);
   });
   document.querySelectorAll('#navLinks a').forEach(function(a){
-    a.addEventListener('click', function(){ document.body.classList.remove('nav-open'); });
+    a.addEventListener('click', closeNav);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ closeNav(); }
+  });
+  document.addEventListener('click', function(e){
+    if(!document.body.classList.contains('nav-open')) return;
+    if(e.target.closest('#navLinks') || e.target.closest('#navToggle')) return;
+    closeNav();
   });
 
   /* draw-on doodles */
@@ -552,7 +614,6 @@
   });
 })();
 </script>
-
 
 </body>
 </html>
