@@ -239,12 +239,14 @@
     position:relative; border:2px solid var(--graphite); background:var(--paper);
     padding:1rem 1rem 1.4rem; transition:transform .35s ease, box-shadow .35s ease;
     opacity:0; transform:translateY(40px);
+    cursor:pointer;
   }
   .work-card.in-view{ opacity:1; animation:settle .6s ease forwards; }
   .work-card:nth-child(odd).in-view{ --rot:-1.6deg; }
   .work-card:nth-child(even).in-view{ --rot:1.2deg; }
   @keyframes settle{ to{ opacity:1; transform:translateY(0) rotate(var(--rot,0deg)); } }
   .work-card:hover{ box-shadow:8px 8px 0 var(--graphite); z-index:2; }
+  .work-card:focus-visible{ box-shadow:8px 8px 0 var(--graphite); }
 
   .card-media{ position:relative; aspect-ratio:4/3; overflow:hidden; border:2px solid var(--graphite); margin-bottom:1rem; }
   .cm-1{ background:linear-gradient(135deg,var(--coral),#ff8a63); }
@@ -260,7 +262,7 @@
     display:block;
 }
 
-  
+
 
   .card-num{
     position:absolute; top:.5rem; left:.5rem; width:34px; height:34px;
@@ -278,6 +280,54 @@
   .card-view{ font-family:var(--ff-mono); font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; display:inline-flex; gap:.4rem; color:var(--pencil); }
   .card-view .go{ transition:transform .25s ease; }
   .work-card:hover .card-view .go{ transform:translateX(6px); }
+
+  /* ================= LIGHTBOX ================= */
+  .lightbox{
+    position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center;
+    padding:clamp(1rem,4vw,3rem); background:rgba(38,38,36,.9);
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .lightbox.open{ opacity:1; pointer-events:auto; }
+  .lightbox-box{
+    position:relative; width:min(900px,100%); max-height:90vh; background:var(--paper);
+    border:2px solid var(--graphite); box-shadow:10px 10px 0 rgba(0,0,0,.5);
+    display:flex; flex-direction:column; transform:scale(.94) rotate(-1deg); transition:transform .3s ease;
+  }
+  .lightbox.open .lightbox-box{ transform:scale(1) rotate(0deg); }
+  .lightbox-media{
+    position:relative; background:var(--graphite); display:flex; align-items:center; justify-content:center;
+    aspect-ratio:4/3; overflow:hidden;
+  }
+  .lightbox-media img{ width:100%; height:100%; object-fit:contain; background:var(--graphite); }
+  .lightbox-close{
+    position:absolute; top:.6rem; right:.6rem; z-index:3; width:40px; height:40px;
+    background:var(--paper); border:2px solid var(--graphite); box-shadow:3px 3px 0 var(--graphite);
+    font-family:var(--ff-mono); font-size:1.1rem; font-weight:700; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; line-height:1;
+  }
+  .lightbox-close:hover{ transform:translate(-2px,-2px); box-shadow:5px 5px 0 var(--graphite); }
+  .lightbox-nav{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:3; width:44px; height:44px;
+    background:var(--paper); border:2px solid var(--graphite); box-shadow:3px 3px 0 var(--graphite);
+    font-family:var(--ff-mono); font-size:1.2rem; font-weight:700; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-nav:hover{ transform:translateY(-50%) translate(-2px,-2px); box-shadow:5px 5px 0 var(--graphite); }
+  .lightbox-prev{ left:.6rem; }
+  .lightbox-next{ right:.6rem; }
+  .lightbox-info{ padding:1rem 1.4rem 1.3rem; }
+  .lightbox-title{ font-family:var(--ff-hand); font-size:1.6rem; font-weight:700; margin:0 0 .3rem; }
+  .lightbox-count{ font-family:var(--ff-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--pencil); }
+  .lightbox-dots{ display:flex; gap:.4rem; margin-top:.7rem; flex-wrap:wrap; }
+  .lightbox-dots button{
+    width:10px; height:10px; border-radius:50%; border:2px solid var(--graphite); background:var(--paper); cursor:pointer; padding:0;
+  }
+  .lightbox-dots button.active{ background:var(--coral); }
+  @media (max-width:600px){
+    .lightbox{ padding:0; }
+    .lightbox-box{ width:100%; height:100%; max-height:100%; border:none; box-shadow:none; transform:none !important; border-radius:0; }
+    .lightbox-media{ aspect-ratio:auto; flex:1; }
+  }
 
   /* ================= ABOUT ================= */
   .about-grid{ display:grid; grid-template-columns:1fr 1.3fr; gap:3.5rem; align-items:center; }
@@ -410,7 +460,9 @@
 
       <div class="work-grid">
 
-        <article class="work-card">
+        <article class="work-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Volleyball C-Cup 2025"
+          data-images="https://i.imgur.com/8ExYnVf.jpeg">
           <div class="card-media  render-toggle">
             <img src="https://i.imgur.com/8ExYnVf.jpeg" alt="volleybll C-Cup 2025">
             <span class="card-num">01<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
@@ -420,7 +472,9 @@
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
-        <article class="work-card">
+        <article class="work-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Volleyball C-Cup 2026"
+          data-images="https://i.imgur.com/IxIhyIR.jpeg">
           <div class="card-media render-toggle">
             <img src="https://i.imgur.com/IxIhyIR.jpeg" alt="volleyball C-Cup 2026">
             <span class="card-num">02<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
@@ -430,7 +484,9 @@
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
-        <article class="work-card">
+        <article class="work-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Poster"
+          data-images="https://i.imgur.com/EGpAKmO.png">
           <div class="card-media  render-toggle">
             <img src="https://i.imgur.com/EGpAKmO.png" alt="BeachVolleyball">
             <span class="card-num">03<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
@@ -440,7 +496,9 @@
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
-        <article class="work-card">
+        <article class="work-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Info Poster"
+          data-images="https://i.imgur.com/0la3Xvu.png">
           <div class="card-media  render-toggle">
             <img src="https://i.imgur.com/0la3Xvu.png" alt="Info Poster">
             <span class="card-num">04<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
@@ -450,7 +508,8 @@
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
-        <article class="work-card">
+        <article class="work-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Project 05">
           <div class="card-media cm-5 render-toggle">
             <span class="card-num">05<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
             <span class="card-tag">Photography</span>
@@ -459,10 +518,11 @@
           <span class="card-view">View project <span class="go">→</span></span>
         </article>
 
-        <article class="work-card">
+        <article class="work-card" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Loading....">
           <div class="card-media cm-6 render-toggle">
             <span class="card-num">06<svg viewBox="0 0 34 34"><path d="M15,2 C25,-2 35,3 32,15 C30,26 6,28 3,15 C1,4 8,4 15,2Z"/></svg></span>
-          
+
           </div>
           <h3 class="card-title">Loading....</h3>
           <span class="card-view"> <span class="go"></span></span>
@@ -519,6 +579,23 @@
    <div class="foot-bottom">© <span id="year"></span> Alex — All rights reserved</div>
 </footer>
 
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="lightbox-box">
+    <button class="lightbox-close" id="lbClose" aria-label="Close">✕</button>
+    <div class="lightbox-media">
+      <button class="lightbox-nav lightbox-prev" id="lbPrev" aria-label="Previous image">‹</button>
+      <img id="lbImg" src="" alt="">
+      <button class="lightbox-nav lightbox-next" id="lbNext" aria-label="Next image">›</button>
+    </div>
+    <div class="lightbox-info">
+      <h3 class="lightbox-title" id="lbTitle"></h3>
+      <span class="lightbox-count" id="lbCount"></span>
+      <div class="lightbox-dots" id="lbDots"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -555,6 +632,91 @@
     if(!document.body.classList.contains('nav-open')) return;
     if(e.target.closest('#navLinks') || e.target.closest('#navToggle')) return;
     closeNav();
+  });
+
+  /* ================= LIGHTBOX / PORTFOLIO GALLERY ================= */
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lbImg');
+  var lbTitle = document.getElementById('lbTitle');
+  var lbCount = document.getElementById('lbCount');
+  var lbDots = document.getElementById('lbDots');
+  var lbPrev = document.getElementById('lbPrev');
+  var lbNext = document.getElementById('lbNext');
+  var lbClose = document.getElementById('lbClose');
+
+  var currentImages = [];
+  var currentIndex = 0;
+  var lastFocused = null;
+
+  function renderSlide(){
+    if(!currentImages.length) return;
+    lbImg.src = currentImages[currentIndex];
+    lbImg.alt = lbTitle.textContent + ' — image ' + (currentIndex+1);
+    lbCount.textContent = (currentIndex+1) + ' / ' + currentImages.length;
+    var multi = currentImages.length > 1;
+    lbPrev.style.display = multi ? 'flex' : 'none';
+    lbNext.style.display = multi ? 'flex' : 'none';
+    lbDots.innerHTML = '';
+    if(multi){
+      currentImages.forEach(function(_, i){
+        var b = document.createElement('button');
+        if(i === currentIndex) b.classList.add('active');
+        b.setAttribute('aria-label', 'Go to image ' + (i+1));
+        b.addEventListener('click', function(){ currentIndex = i; renderSlide(); });
+        lbDots.appendChild(b);
+      });
+    }
+  }
+
+  function openLightbox(card){
+    var imagesAttr = card.getAttribute('data-images');
+    var fallbackImg = card.querySelector('.card-media img');
+    if(imagesAttr){
+      currentImages = imagesAttr.split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+    } else if(fallbackImg){
+      currentImages = [fallbackImg.src];
+    } else {
+      currentImages = [];
+    }
+    if(!currentImages.length) return; // nothing to show yet (placeholder project)
+
+    currentIndex = 0;
+    lbTitle.textContent = card.getAttribute('data-title') || '';
+    renderSlide();
+
+    lastFocused = document.activeElement;
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+
+  function closeLightbox(){
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if(lastFocused){ lastFocused.focus(); }
+  }
+
+  function nextSlide(){ currentIndex = (currentIndex + 1) % currentImages.length; renderSlide(); }
+  function prevSlide(){ currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; renderSlide(); }
+
+  document.querySelectorAll('.work-card').forEach(function(card){
+    card.addEventListener('click', function(){ openLightbox(card); });
+    card.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLightbox(card); }
+    });
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbNext.addEventListener('click', nextSlide);
+  lbPrev.addEventListener('click', prevSlide);
+  lb.addEventListener('click', function(e){ if(e.target === lb){ closeLightbox(); } });
+  document.addEventListener('keydown', function(e){
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape'){ closeLightbox(); }
+    if(e.key === 'ArrowRight'){ nextSlide(); }
+    if(e.key === 'ArrowLeft'){ prevSlide(); }
   });
 
   /* draw-on doodles */
